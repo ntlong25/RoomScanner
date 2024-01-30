@@ -10,7 +10,7 @@ import RoomPlan
 import Observation
 
 @Observable
-class Model: RoomCaptureViewDelegate, RoomCaptureSessionDelegate, ObservableObject
+class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate, ObservableObject
 {
     var roomCaptureView: RoomCaptureView
     var showExportButton = false
@@ -40,17 +40,27 @@ class Model: RoomCaptureViewDelegate, RoomCaptureSessionDelegate, ObservableObje
     }
     
     func captureView(didPresent processedResult: CapturedRoom, error: Error?) {
+        if let err = error {
+            print("Error: \(err.localizedDescription)")
+        }
         finalResult = processedResult
     }
     
     func export() {
-        exportUrl = FileManager.default.temporaryDirectory.appending(path: "scan.usdz")
+        exportUrl = FileManager.default.temporaryDirectory.appending(path: "Export")
+        guard let destinationURL = exportUrl?.appending(path: "Room.usdz") else { return }
+        guard let capturedRoomURL = exportUrl?.appending(path: "Room.json") else { return }
         do {
-            try finalResult?.export(to: exportUrl!)
+            try FileManager.default.createDirectory(at: exportUrl!, withIntermediateDirectories: true)
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(finalResult)
+            try jsonData.write(to: capturedRoomURL)
+            try finalResult?.export(to: destinationURL, exportOptions: .parametric)
         } catch {
-            print("Error exporting usdz scan.")
+            print("Error: \(error.localizedDescription)")
             return
         }
+        
         showShareSheet = true
     }
     

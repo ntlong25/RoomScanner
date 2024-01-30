@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @Environment(RoomCaptureController.self) var roomController
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -28,6 +30,7 @@ struct OnboardingView: View {
                 Spacer()
                 Text("Recent model")
                 // Model list show here after scanning done
+//                Image(roomController.exportUrl)
                 Spacer()
                 
                 NavigationLink(destination: ScanRoomView()) {

@@ -11,9 +11,8 @@
 		DC63B5E42B64F59100C7B358 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC63B5E32B64F59100C7B358 /* Assets.xcassets */; };
 		DC63B5E72B64F59100C7B358 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC63B5E62B64F59100C7B358 /* Preview Assets.xcassets */; };
 		DC63B5EF2B64F85B00C7B358 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B5EE2B64F85B00C7B358 /* OnboardingView.swift */; };
-		DC63B5F12B64FF1A00C7B358 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B5F02B64FF1A00C7B358 /* TestView.swift */; };
 		DC63B5F32B6500A700C7B358 /* ScanRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B5F22B6500A700C7B358 /* ScanRoomView.swift */; };
-		DC63B5F62B689C7900C7B358 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B5F52B689C7900C7B358 /* Model.swift */; };
+		DC63B5F62B689C7900C7B358 /* RoomCaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B5F52B689C7900C7B358 /* RoomCaptureController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,9 +21,8 @@
 		DC63B5E32B64F59100C7B358 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC63B5E62B64F59100C7B358 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DC63B5EE2B64F85B00C7B358 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		DC63B5F02B64FF1A00C7B358 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		DC63B5F22B6500A700C7B358 /* ScanRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanRoomView.swift; sourceTree = "<group>"; };
-		DC63B5F52B689C7900C7B358 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		DC63B5F52B689C7900C7B358 /* RoomCaptureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCaptureController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +55,7 @@
 		DC63B5DE2B64F58F00C7B358 /* RoomScanner */ = {
 			isa = PBXGroup;
 			children = (
-				DC63B5F42B689C6800C7B358 /* Model */,
+				DC63B5F42B689C6800C7B358 /* Controller */,
 				DC63B5ED2B64F83900C7B358 /* Views */,
 				DC031C2F2B68CB1900D82DAD /* RoomScannerApp.swift */,
 				DC63B5E32B64F59100C7B358 /* Assets.xcassets */,
@@ -78,18 +76,17 @@
 			isa = PBXGroup;
 			children = (
 				DC63B5EE2B64F85B00C7B358 /* OnboardingView.swift */,
-				DC63B5F02B64FF1A00C7B358 /* TestView.swift */,
 				DC63B5F22B6500A700C7B358 /* ScanRoomView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		DC63B5F42B689C6800C7B358 /* Model */ = {
+		DC63B5F42B689C6800C7B358 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				DC63B5F52B689C7900C7B358 /* Model.swift */,
+				DC63B5F52B689C7900C7B358 /* RoomCaptureController.swift */,
 			);
-			path = Model;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,11 +159,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC63B5F12B64FF1A00C7B358 /* TestView.swift in Sources */,
 				DC031C302B68CB1900D82DAD /* RoomScannerApp.swift in Sources */,
 				DC63B5F32B6500A700C7B358 /* ScanRoomView.swift in Sources */,
 				DC63B5EF2B64F85B00C7B358 /* OnboardingView.swift in Sources */,
-				DC63B5F62B689C7900C7B358 /* Model.swift in Sources */,
+				DC63B5F62B689C7900C7B358 /* RoomCaptureController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

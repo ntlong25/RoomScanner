@@ -11,44 +11,41 @@ import RoomPlan
 
 struct ScanRoomView: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(Model.self) var model
+    @Environment(RoomCaptureController.self) var roomController
     
-    @State var showShareSheet = false
     var body : some View {
         
-        @Bindable var bindableModel = model
+        @Bindable var bindableController = roomController
         
         ZStack(alignment: .bottom) {
             RoomCaptureRep()
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarItems(leading: Button("Cancel") {
-                    model.stopSession()
+                    roomController.stopSession()
                     presentationMode.wrappedValue.dismiss()
                 })
                 .navigationBarItems(trailing: Button("Done") {
-                    model.stopSession()
-                    model.showExportButton = true
+                    roomController.stopSession()
+                    roomController.showExportButton = true
                 }
-                .opacity(model.showExportButton ? 0 : 1))
+                .opacity(roomController.showExportButton ? 0 : 1))
                 .onAppear() {
-                    model.showExportButton = false
-                    model.startSession()
+                    roomController.showExportButton = false
+                    roomController.startSession()
                 }
             
             Button {
-                model.export()
-                showShareSheet = true
+                roomController.export()
             } label: {
                 Text("Export")
             }
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
-            .opacity(model.showExportButton ? 1 : 0)
+            .opacity(roomController.showExportButton ? 1 : 0)
             .padding()
-            .sheet(isPresented: $bindableModel.showShareSheet, content: {
-                ActivityView(items: [model.exportUrl!])
+            .sheet(isPresented: $bindableController.showShareSheet, content: {
+                ActivityView(items: [roomController.exportUrl!])
                     .onDisappear() {
-                        showShareSheet = false
                         presentationMode.wrappedValue.dismiss()
                     }
             })
@@ -57,10 +54,10 @@ struct ScanRoomView: View {
 }
 
 struct RoomCaptureRep: UIViewRepresentable {
-    @Environment(Model.self) var model
+    @Environment(RoomCaptureController.self) var roomController
     
     func makeUIView(context: Context) -> RoomCaptureView {
-        return model.roomCaptureView
+        return roomController.roomCaptureView
     }
     
     func updateUIView(_ uiView: RoomCaptureView, context: Context) {
