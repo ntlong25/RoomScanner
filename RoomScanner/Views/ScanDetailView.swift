@@ -403,4 +403,5 @@ struct ActionButton: View {
             qualityScore: 85
         ))
     }
+    .modelContainer(for: RoomScanRecord.self, inMemory: true)
 }

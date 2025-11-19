@@ -249,4 +249,5 @@ struct QualityBadge: View {
 
 #Preview {
     ScanGalleryView()
+        .modelContainer(for: RoomScanRecord.self, inMemory: true)
 }

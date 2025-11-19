@@ -13,7 +13,7 @@ import SwiftUI
 import SwiftData
 
 @Observable
-class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate, ObservableObject
+class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate
 {
     var roomCaptureView: RoomCaptureView
     var showExportButton = false
@@ -193,7 +193,14 @@ class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate
 
         isProcessing = true
 
-        DispatchQueue.global(qos: .userInitiated).async { [self] in
+        let scanName = self.scanName
+        let currentMeasurements = self.currentMeasurements
+        let exportUSDZ = self.exportUSDZ
+        let exportJSON = self.exportJSON
+        let exportPDF = self.exportPDF
+        let modelContext = self.modelContext
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             do {
                 // Create export directory
                 let scanId = UUID()
@@ -269,20 +276,20 @@ class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate
                     }
                 }
 
-                DispatchQueue.main.async {
-                    self.exportUrl = tempDir
-                    self.isProcessing = false
-                    self.showShareSheet = true
-                    self.toastMessage = ToastMessage(
+                DispatchQueue.main.async { [weak self] in
+                    self?.exportUrl = tempDir
+                    self?.isProcessing = false
+                    self?.showShareSheet = true
+                    self?.toastMessage = ToastMessage(
                         message: "Export completed successfully!",
                         type: .success
                     )
                 }
 
             } catch {
-                DispatchQueue.main.async {
-                    self.isProcessing = false
-                    self.alertItem = AlertItem(
+                DispatchQueue.main.async { [weak self] in
+                    self?.isProcessing = false
+                    self?.alertItem = AlertItem(
                         error: .exportFailed(error.localizedDescription)
                     )
                 }
@@ -299,7 +306,9 @@ class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate
 
         isProcessing = true
 
-        DispatchQueue.global(qos: .userInitiated).async { [self] in
+        let scannedRooms = self.scannedRooms
+
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             do {
                 let exportDir = FileManager.default.temporaryDirectory.appending(path: "MultiRoomExport")
                 try FileManager.default.createDirectory(at: exportDir, withIntermediateDirectories: true)
@@ -329,16 +338,16 @@ class RoomCaptureController: RoomCaptureViewDelegate, RoomCaptureSessionDelegate
                     }
                 }
 
-                DispatchQueue.main.async {
-                    self.exportUrl = exportDir
-                    self.isProcessing = false
-                    self.showShareSheet = true
+                DispatchQueue.main.async { [weak self] in
+                    self?.exportUrl = exportDir
+                    self?.isProcessing = false
+                    self?.showShareSheet = true
                 }
 
             } catch {
-                DispatchQueue.main.async {
-                    self.isProcessing = false
-                    self.alertItem = AlertItem(
+                DispatchQueue.main.async { [weak self] in
+                    self?.isProcessing = false
+                    self?.alertItem = AlertItem(
                         error: .exportFailed(error.localizedDescription)
                     )
                 }

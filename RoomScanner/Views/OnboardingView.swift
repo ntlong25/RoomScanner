@@ -17,6 +17,7 @@ struct OnboardingView: View {
     @State private var showingScanOptions = false
     @State private var showingGallery = false
     @State private var scanName = "Room Scan"
+    @State private var navigateToScan = false
 
     var body: some View {
         NavigationStack {
@@ -45,6 +46,9 @@ struct OnboardingView: View {
             }
             .sheet(isPresented: $showingScanOptions) {
                 scanOptionsSheet
+            }
+            .navigationDestination(isPresented: $navigateToScan) {
+                ScanRoomView()
             }
         }
         .onAppear {
@@ -204,23 +208,27 @@ struct OnboardingView: View {
                 }
 
                 Section("Scan Mode") {
-                    NavigationLink(destination: ScanRoomView()) {
-                        Label("Single Room", systemImage: "square")
-                    }
-                    .simultaneousGesture(TapGesture().onEnded {
+                    Button {
                         roomController.scanName = scanName
                         roomController.isMultiRoomMode = false
                         showingScanOptions = false
-                    })
-
-                    NavigationLink(destination: ScanRoomView()) {
-                        Label("Multiple Rooms", systemImage: "square.grid.2x2")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            navigateToScan = true
+                        }
+                    } label: {
+                        Label("Single Room", systemImage: "square")
                     }
-                    .simultaneousGesture(TapGesture().onEnded {
+
+                    Button {
                         roomController.scanName = scanName
                         roomController.isMultiRoomMode = true
                         showingScanOptions = false
-                    })
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            navigateToScan = true
+                        }
+                    } label: {
+                        Label("Multiple Rooms", systemImage: "square.grid.2x2")
+                    }
                 }
 
                 Section("Export Options") {
@@ -304,4 +312,5 @@ struct RecentScanCard: View {
 #Preview {
     OnboardingView()
         .environment(RoomCaptureController())
+        .modelContainer(for: RoomScanRecord.self, inMemory: true)
 }

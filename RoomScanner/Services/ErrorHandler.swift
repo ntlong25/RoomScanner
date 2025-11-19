@@ -95,30 +95,20 @@ struct AlertItem: Identifiable {
     let title: String
     let message: String
     let icon: String
-    let primaryButton: Alert.Button
-    let secondaryButton: Alert.Button?
+    let showHelpButton: Bool
 
-    init(error: RoomScanError, primaryAction: @escaping () -> Void = {}) {
+    init(error: RoomScanError) {
         self.title = "Error"
         self.message = error.errorDescription ?? "Unknown error"
         self.icon = error.icon
-        self.primaryButton = .default(Text("OK"), action: primaryAction)
-
-        if let recovery = error.recoverySuggestion {
-            self.secondaryButton = .cancel(Text("Help")) {
-                // Could show help sheet here
-            }
-        } else {
-            self.secondaryButton = nil
-        }
+        self.showHelpButton = error.recoverySuggestion != nil
     }
 
     init(title: String, message: String, icon: String = "info.circle") {
         self.title = title
         self.message = message
         self.icon = icon
-        self.primaryButton = .default(Text("OK"))
-        self.secondaryButton = nil
+        self.showHelpButton = false
     }
 }
 
@@ -191,21 +181,17 @@ struct ErrorAlertModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .alert(item: $alertItem) { item in
-                if let secondary = item.secondaryButton {
-                    return Alert(
-                        title: Text(item.title),
-                        message: Text(item.message),
-                        primaryButton: item.primaryButton,
-                        secondaryButton: secondary
-                    )
-                } else {
-                    return Alert(
-                        title: Text(item.title),
-                        message: Text(item.message),
-                        dismissButton: item.primaryButton
-                    )
-                }
+            .alert(
+                alertItem?.title ?? "Error",
+                isPresented: Binding(
+                    get: { alertItem != nil },
+                    set: { if !$0 { alertItem = nil } }
+                ),
+                presenting: alertItem
+            ) { _ in
+                Button("OK", role: .cancel) { }
+            } message: { item in
+                Text(item.message)
             }
     }
 }

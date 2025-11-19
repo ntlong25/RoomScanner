@@ -11,7 +11,7 @@ import UIKit
 import RoomPlan
 
 struct ScanRoomView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @Environment(RoomCaptureController.self) var roomController
 
     @State private var showMeasurements = true
@@ -75,7 +75,7 @@ struct ScanRoomView: View {
                 Button("Cancel") {
                     roomController.stopSession()
                     roomController.resetScan()
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
             }
 
@@ -135,7 +135,7 @@ struct ScanRoomView: View {
             if let url = roomController.exportUrl {
                 ActivityView(items: [url])
                     .onDisappear() {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
             }
         }
